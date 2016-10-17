@@ -2,10 +2,8 @@ import sys
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
-import enum
 
 Base = declarative_base()
-
 
 # Shelter domain
 class Shelter(Base):
@@ -25,16 +23,14 @@ class Puppy(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     dateOfBirth = Column(Date, nullable=True)
-    gender = Column(Enum(Gender), nullable=False)
+    gender = Column(String(10), nullable=False)
     weight = Column(Float, nullable=True)
     shelter_id = Column(Integer, ForeignKey('shelter.id'))
     shelter = relationship(Shelter)
+    picture = Column(String(200))
 
-class Gender(enum.ENUM):
-    MALE = 'Male'
-    FEMALE = 'Female'
 
 
 # Engine and connection
-engine =  create_engine('sqlite://shelter.db')
+engine =  create_engine('sqlite:///shelter.db')
 Base.metadata.create_all(engine)
